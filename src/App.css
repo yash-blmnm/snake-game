@@ -1,26 +1,31 @@
 .main {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px double #010201;
   min-height: 88vh;
   margin: 50px 40px 40px;
 }
 
+.dashed-border {
+  border-top: 4px dashed #000;
+  width: 568px;
+  margin: 0 0 10px;
+}
 .board {
   display: grid;
-  grid-template-columns: repeat(40, auto [col-start]);
-  grid-template-rows: repeat(36, auto [row-start]);
+  grid-template-columns: repeat(20, auto [col-start]);
+    grid-template-rows: repeat(18, auto [row-start]);
   grid-column: 40;
   grid-row: 36;
   height: 504px;
   width: 560px;
-  border: 2px solid #000;
+  border: 4px dashed #000;
 }
 
 .cell {
-  height: 14px;
-  width: 14px;
+  height: 28px;
+    width: 28px;
   /* border: 1px solid blue */
 }
 .cell.snake {
@@ -28,11 +33,16 @@
   border-radius: 8px;
 }
 
+.cell.food {
+  background: url('../public/images/food.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
 .start-board {
   display: flex;
   justify-content: center;
   align-items: center;
-    border: 2px double #010201;
+    border: 4px dashed #010201;
     height: 504px;
     width: 560px;
 }
