@@ -8,4 +8,11 @@ const DIRECTION = {
   down: 40,
 };
 
-export { ROW_SIZE, COLUMN_SIZE, DIRECTION };
+const CELL_TYPE = {
+  snake: "snake",
+  food: "food",
+  danger: "danger",
+  plain: "plain",
+};
+
+export { ROW_SIZE, COLUMN_SIZE, DIRECTION, CELL_TYPE };

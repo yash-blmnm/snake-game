@@ -1,6 +1,22 @@
 import React, { useContext } from "react";
 import { GameContext } from "../../GameContext";
 import { GAME_STATUS } from "../../constants";
+import { styled } from "styled-components";
+import PlayButton from "../../../../components/PlayButton";
+import HeadingBanner from "../../../../components/styled/HeadingBanner";
+
+const EndBoardWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 99;
+  backdrop-filter: blur(10px);
+  height: 100%;
+  width: 80%;
+`;
 
 const EndBoard = () => {
   const {
@@ -8,20 +24,17 @@ const EndBoard = () => {
     dispatch,
   } = useContext(GameContext);
   return (
-    <div>
-      {isHighScore ? (
-        <span>New High Score: {highscore}</span>
-      ) : (
-        <span>GAME OVER!</span>
-      )}
-      <button
+    <EndBoardWrapper>
+      <HeadingBanner>
+        {isHighScore ? `New High Score: ${highscore}` : "GAME OVER!"}
+      </HeadingBanner>
+      <PlayButton
         onClick={() =>
-          dispatch({ type: "updateGameStatus", status: GAME_STATUS.over })
+          dispatch({ type: "updateGameStatus", status: GAME_STATUS.none })
         }
-      >
-        Play Again
-      </button>
-    </div>
+        label={"Play Again"}
+      />
+    </EndBoardWrapper>
   );
 };
 

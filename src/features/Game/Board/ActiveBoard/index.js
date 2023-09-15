@@ -1,11 +1,29 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { ROW_SIZE, COLUMN_SIZE, DIRECTION } from "./constants";
-import EachCellComponent from "../../../../components/EachCellComponent";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
+import { ROW_SIZE, COLUMN_SIZE, DIRECTION, CELL_TYPE } from "./constants";
+import EachCell from "../../../../components/EachCell";
 import { GameContext } from "../../../Game/GameContext";
 import { GAME_STATUS } from "../../../Game/constants";
+import { styled } from "styled-components";
+
+const ActiveBoardWrapper = styled`
+  display: grid;
+  grid-template-columns: repeat(${ROW_SIZE}, auto [col-start]);
+  grid-template-rows: repeat(${COLUMN_SIZE}, auto [row-start]);
+  height: 100%;
+  width: 100%;
+`;
 
 const Action = () => {
-  const { state: gameAttributes, dispatch } = useContext(GameContext);
+  const {
+    state: { status: gameState, interval, score },
+    dispatch,
+  } = useContext(GameContext);
 
   // Snake position coordinates
   const [snakeArray, setSnakeArray] = useState([
@@ -31,6 +49,13 @@ const Action = () => {
     }
   };
 
+  const doesSnakeIntersect = (firstX, firstY) => {
+    const intersectArray = snakeArray.filter(
+      (val, index) => val[0] === firstX && val[1] === firstY
+    );
+    return intersectArray.length > 0;
+  };
+
   const play = () => {
     let firstX = snakeArray[0][0];
     let firstY = snakeArray[0][1];
@@ -52,13 +77,14 @@ const Action = () => {
     }
     let newSnakeArray = [[firstX, firstY], ...snakeArray];
     if (foodIndex[0] === firstX && foodIndex[1] === firstY) {
-      dispatch({ type: "updateGameScore", score: gameAttributes.score + 10 });
+      dispatch({ type: "updateGameScore", score: score + 10 });
       generateFood();
     } else if (
       firstX <= -1 ||
       firstY <= -1 ||
       firstX >= ROW_SIZE ||
-      firstY >= COLUMN_SIZE
+      firstY >= COLUMN_SIZE ||
+      doesSnakeIntersect(firstX, firstY)
     ) {
       dispatch({ type: "updateGameStatus", status: GAME_STATUS.over });
     } else {
@@ -103,27 +129,43 @@ const Action = () => {
     e.preventDefault();
   };
 
+  const getCellType = useCallback((xindex, yindex) => {
+    const isSnakeArray = snakeArray.filter(
+      (coordinates) => coordinates[0] === xindex && coordinates[1] === yindex
+    );
+    if (isSnakeArray.length > 0) {
+      return CELL_TYPE.snake;
+    } else if (
+      foodIndex &&
+      foodIndex[0] === xindex &&
+      foodIndex[1] === yindex
+    ) {
+      return CELL_TYPE.food;
+    }
+    return CELL_TYPE.plain;
+  });
+
   useEffect(() => {
-    if (gameAttributes.status === GAME_STATUS.live) {
+    if (gameState === GAME_STATUS.live) {
       document.addEventListener("keydown", handleKeyEvents, true);
       generateFood();
     } else {
       document.removeEventListener("keydown", handleKeyEvents, true);
     }
     return () => document.removeEventListener("keydown", handleKeyEvents, true);
-  }, [gameAttributes]);
+  }, [gameState]);
 
   useEffect(() => {
     let playInterval;
-    if (gameAttributes.status === GAME_STATUS.live) {
+    if (gameState === GAME_STATUS.live) {
       playInterval = setTimeout(() => {
         play();
-      }, gameAttributes.interval);
+      }, interval);
       return () => clearTimeout(playInterval);
-    } else if (gameAttributes.status === GAME_STATUS.over) {
+    } else if (gameState === GAME_STATUS.over) {
       clearTimeout(playInterval);
     }
-  }, [gameAttributes, snakeArray]);
+  }, [gameState, snakeArray]);
 
   return (
     <div className="board">
@@ -133,17 +175,8 @@ const Action = () => {
           Array(COLUMN_SIZE)
             .fill(1)
             .map((val, j) => {
-              const isSnakeArray = snakeArray.filter(
-                (coordinates) => coordinates[0] === i && coordinates[1] === j
-              );
               return (
-                <EachCellComponent
-                  key={`${i}_${j}`}
-                  isFoodPresent={
-                    foodIndex && foodIndex[0] === i && foodIndex[1] === j
-                  }
-                  isSnakePresent={isSnakeArray.length > 0}
-                />
+                <EachCell key={`${i}_${j}`} cellType={getCellType(i, j)} />
               );
             })
         )}
