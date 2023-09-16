@@ -15,9 +15,17 @@ const Score = () => {
   const {
     state: { score, highScore },
   } = useContext(GameContext);
+
+  const displayScore = () => {
+    let dScore = "" + score;
+    while (dScore.length < 4) {
+      dScore = "0" + dScore;
+    }
+    return dScore;
+  };
   return (
     <ScoreWrapper>
-      <div>{score}</div>
+      <div>{displayScore()}</div>
       <div>Best: {highScore}</div>
     </ScoreWrapper>
   );

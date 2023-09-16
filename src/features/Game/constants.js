@@ -2,6 +2,7 @@ const GAME_STATUS = {
   none: "none",
   live: "live",
   over: "over",
+  pause: "pause",
 };
 
 const INTERVAL = {

@@ -4,6 +4,7 @@ import { GAME_STATUS } from "../../constants";
 import { styled } from "styled-components";
 import PlayButton from "../../../../components/PlayButton";
 import HeadingBanner from "../../../../components/styled/HeadingBanner";
+import Confetti from "../../../../components/Confetti";
 
 const EndBoardWrapper = styled.div`
   position: absolute;
@@ -15,18 +16,18 @@ const EndBoardWrapper = styled.div`
   z-index: 99;
   backdrop-filter: blur(10px);
   height: 100%;
-  width: 80%;
+  width: 100%;
 `;
 
 const EndBoard = () => {
   const {
-    state: { isHighScore, highscore },
+    state: { isHighScore, highScore },
     dispatch,
   } = useContext(GameContext);
   return (
     <EndBoardWrapper>
-      <HeadingBanner>
-        {isHighScore ? `New High Score: ${highscore}` : "GAME OVER!"}
+      <HeadingBanner textColor="#d3d3d3">
+        {isHighScore ? `New High Score: ${highScore}` : "GAME OVER!"}
       </HeadingBanner>
       <PlayButton
         onClick={() =>
@@ -34,6 +35,7 @@ const EndBoard = () => {
         }
         label={"Play Again"}
       />
+      {isHighScore ? <Confetti /> : ""}
     </EndBoardWrapper>
   );
 };

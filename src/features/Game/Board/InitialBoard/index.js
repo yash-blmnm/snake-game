@@ -33,19 +33,13 @@ function Initial() {
     });
   };
 
-  const initialInput = useCallback((inputElement) => {
-    if (inputElement) {
-      inputElement.focus();
-    }
-  }, []);
   return (
     <BoardWrapper>
       <SnakeAnimation />
-      <HeadingBanner>SNAKE</HeadingBanner>
+      <HeadingBanner textColor="#006400">SNAKE</HeadingBanner>
       <ButtonWrapper>
         <PlayButton
           onClick={() => startGame(INTERVAL.beginner)}
-          ref={initialInput}
           label={"Beginner"}
         />
         <PlayButton

@@ -3,18 +3,3 @@
   justify-content: center;
 }
 
-.board {
-  display: grid;
-  grid-template-columns: repeat(20, auto [col-start]);
-    grid-template-rows: repeat(18, auto [row-start]);
-  height: 100%;
-    width: 100%;
-}
-
-/* @media only screen and (max-width: 600px) {
-  main {
-    scale: 0.5;
-  }
-}
-
-*/

@@ -5,23 +5,28 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { ROW_SIZE, COLUMN_SIZE, DIRECTION, CELL_TYPE } from "./constants";
+import {
+  ROW_SIZE,
+  COLUMN_SIZE,
+  CONTROL_KEY_CODE,
+  CELL_TYPE,
+} from "./constants";
 import EachCell from "../../../../components/EachCell";
 import { GameContext } from "../../../Game/GameContext";
 import { GAME_STATUS } from "../../../Game/constants";
 import { styled } from "styled-components";
 
-const ActiveBoardWrapper = styled`
+const ActiveBoardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(${ROW_SIZE}, auto [col-start]);
-  grid-template-rows: repeat(${COLUMN_SIZE}, auto [row-start]);
+  grid-template-columns: repeat(${({cols}) => cols}, auto [col-start]);
+  grid-template-rows: repeat(${({rows}) => rows}, auto [row-start]);
   height: 100%;
   width: 100%;
 `;
 
 const Action = () => {
   const {
-    state: { status: gameState, interval, score },
+    state: { status: gameState, interval, score, controlEvent },
     dispatch,
   } = useContext(GameContext);
 
@@ -32,7 +37,7 @@ const Action = () => {
     [0, COLUMN_SIZE / 2],
   ]);
   // Snake direction stored as ref to avoid conflict when binding keypress event listener.
-  const snakeDirection = useRef(DIRECTION.down);
+  const snakeDirection = useRef(CONTROL_KEY_CODE.down);
   // Food index coordinates
   const [foodIndex, setFoodIndex] = useState([]);
 
@@ -60,16 +65,16 @@ const Action = () => {
     let firstX = snakeArray[0][0];
     let firstY = snakeArray[0][1];
     switch (snakeDirection.current) {
-      case DIRECTION.up:
+      case CONTROL_KEY_CODE.up:
         firstX -= 1;
         break;
-      case DIRECTION.down:
+      case CONTROL_KEY_CODE.down:
         firstX += 1;
         break;
-      case DIRECTION.left:
+      case CONTROL_KEY_CODE.left:
         firstY -= 1;
         break;
-      case DIRECTION.right:
+      case CONTROL_KEY_CODE.right:
         firstY += 1;
         break;
       default:
@@ -98,35 +103,43 @@ const Action = () => {
     let dir = snakeDirection.current;
     if (dir !== newDir) {
       switch (newDir) {
-        case DIRECTION.up: {
-          if (dir !== DIRECTION.down) {
+        case CONTROL_KEY_CODE.up: {
+          if (dir !== CONTROL_KEY_CODE.down) {
             snakeDirection.current = newDir;
           }
           break;
         }
-        case DIRECTION.down: {
-          if (dir !== DIRECTION.up) {
+        case CONTROL_KEY_CODE.down: {
+          if (dir !== CONTROL_KEY_CODE.up) {
             snakeDirection.current = newDir;
           }
           break;
         }
-        case DIRECTION.left: {
-          if (dir !== DIRECTION.right) {
+        case CONTROL_KEY_CODE.left: {
+          if (dir !== CONTROL_KEY_CODE.right) {
             snakeDirection.current = newDir;
           }
           break;
         }
-        case DIRECTION.right: {
-          if (dir !== DIRECTION.left) {
+        case CONTROL_KEY_CODE.right: {
+          if (dir !== CONTROL_KEY_CODE.left) {
             snakeDirection.current = newDir;
           }
+          break;
+        }
+        case CONTROL_KEY_CODE.space: {
+          const newGameState =
+            gameState === GAME_STATUS.pause
+              ? GAME_STATUS.live
+              : GAME_STATUS.pause;
+          dispatch({ type: "updateGameStatus", status: newGameState });
           break;
         }
         default:
           break;
       }
     }
-    e.preventDefault();
+    e.preventDefault && e.preventDefault();
   };
 
   const getCellType = useCallback((xindex, yindex) => {
@@ -146,9 +159,19 @@ const Action = () => {
   });
 
   useEffect(() => {
-    if (gameState === GAME_STATUS.live) {
+    if (controlEvent) {
+      handleKeyEvents(controlEvent);
+    }
+  }, [controlEvent]);
+
+  useEffect(() => {
+    generateFood();
+  }, []);
+
+  useEffect(() => {
+    if ([GAME_STATUS.live, GAME_STATUS.pause].includes(gameState)) {
       document.addEventListener("keydown", handleKeyEvents, true);
-      generateFood();
+      // generateFood();
     } else {
       document.removeEventListener("keydown", handleKeyEvents, true);
     }
@@ -162,13 +185,13 @@ const Action = () => {
         play();
       }, interval);
       return () => clearTimeout(playInterval);
-    } else if (gameState === GAME_STATUS.over) {
+    } else {
       clearTimeout(playInterval);
     }
   }, [gameState, snakeArray]);
 
   return (
-    <div className="board">
+    <ActiveBoardWrapper rows={ROW_SIZE} cols={COLUMN_SIZE}>
       {Array(ROW_SIZE)
         .fill(1)
         .map((val, i) =>
@@ -180,7 +203,7 @@ const Action = () => {
               );
             })
         )}
-    </div>
+    </ActiveBoardWrapper>
   );
 };
 

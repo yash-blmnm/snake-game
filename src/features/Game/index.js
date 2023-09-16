@@ -1,6 +1,6 @@
 import React from "react";
 import GameBorder from "../../components/styled/GameBorder";
-import ScoreComponent from "./Score";
+import Score from "./Score";
 import Board from "./Board";
 import { GameProvider } from "./GameContext";
 import { styled } from "styled-components";
@@ -11,11 +11,11 @@ const GameWrapper = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 8em;
+  margin-top: 4em;
 
   @media (max-width: 768px) {
     scale: 0.5;
-    margin: 10px;
+    margin: 0px;
   }
 `;
 
@@ -23,10 +23,10 @@ const Game = () => {
   return (
     <GameProvider>
       <GameWrapper>
-        <ScoreComponent />
+        <Score />
         <GameBorder />
         <Board />
-        {/* <Controls /> */}
+        <Controls />
       </GameWrapper>
     </GameProvider>
   );

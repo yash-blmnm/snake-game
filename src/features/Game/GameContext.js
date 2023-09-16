@@ -7,6 +7,7 @@ const GAME_DEFAULT_ATTRS = {
   score: 0,
   highScore: 0,
   isHighScore: false,
+  controlEvent: null,
 };
 
 export const GameContext = createContext();
@@ -20,6 +21,7 @@ function gameReducer(state, action) {
         interval: action.interval,
         score: 0,
         isHighScore: false,
+        controlEvent: null,
       };
     }
     case "updateGameInterval":
@@ -47,6 +49,9 @@ function gameReducer(state, action) {
         return { ...state, score: action.score };
       }
       break;
+    case "onContolsClick": {
+      return { ...state, controlEvent: { keyCode: action.contolKey } };
+    }
     default: {
       return state;
     }

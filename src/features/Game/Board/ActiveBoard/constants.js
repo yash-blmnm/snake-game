@@ -1,11 +1,12 @@
 const ROW_SIZE = 18;
 const COLUMN_SIZE = 20;
 
-const DIRECTION = {
+const CONTROL_KEY_CODE = {
   left: 37,
   right: 39,
   up: 38,
   down: 40,
+  space: 32,
 };
 
 const CELL_TYPE = {
@@ -15,4 +16,4 @@ const CELL_TYPE = {
   plain: "plain",
 };
 
-export { ROW_SIZE, COLUMN_SIZE, DIRECTION, CELL_TYPE };
+export { ROW_SIZE, COLUMN_SIZE, CONTROL_KEY_CODE, CELL_TYPE };

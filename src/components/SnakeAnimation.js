@@ -22,7 +22,7 @@ const SnakeAnimation = () => {
       {Array(3)
         .fill(1)
         .map((val, idx) => (
-          <EachCell cellType={CELL_TYPE.snake} />
+          <EachCell key={idx} cellType={CELL_TYPE.snake} />
         ))}
     </AnimationWrapper>
   );
