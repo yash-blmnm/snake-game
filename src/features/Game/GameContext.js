@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { GAME_STATUS, INTERVAL } from "./constants";
+import { GAME_STATUS, INTERVAL, SUCCESS_CRITERIA } from "./constants";
 
 const GAME_DEFAULT_ATTRS = {
   status: GAME_STATUS.none,
@@ -8,6 +8,7 @@ const GAME_DEFAULT_ATTRS = {
   highScore: 0,
   isHighScore: false,
   controlEvent: null,
+  startTime: null,
 };
 
 export const GameContext = createContext();
@@ -22,6 +23,7 @@ function gameReducer(state, action) {
         score: 0,
         isHighScore: false,
         controlEvent: null,
+        startTime: Date.now(),
       };
     }
     case "updateGameInterval":
@@ -46,7 +48,21 @@ function gameReducer(state, action) {
       break;
     case "updateGameScore":
       {
-        return { ...state, score: action.score };
+        const { startTime } = state;
+        const { score } = state;
+        if (
+          Date.now() - startTime >= SUCCESS_CRITERIA.minInterval &&
+          score >= SUCCESS_CRITERIA.minScore
+        ) {
+          return {
+            ...state,
+            status: GAME_STATUS.success,
+            score,
+            hoghScore: score,
+            isHighScore: true,
+          };
+        }
+        return { ...state, score: score };
       }
       break;
     case "onContolsClick": {

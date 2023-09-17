@@ -3,6 +3,7 @@ const GAME_STATUS = {
   live: "live",
   over: "over",
   pause: "pause",
+  success: "success",
 };
 
 const INTERVAL = {
@@ -11,4 +12,9 @@ const INTERVAL = {
   advanced: 100,
 };
 
-export { GAME_STATUS, INTERVAL };
+const SUCCESS_CRITERIA = {
+  minInterval: 60000,
+  minScore: 150,
+};
+
+export { GAME_STATUS, INTERVAL, SUCCESS_CRITERIA };

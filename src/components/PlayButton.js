@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 const PlayButtonWrapper = styled.button`
   background: transparent;
   border: none;
-  color: #010201;
+  color: #033203;
   font-size: medium;
   cursor: pointer;
   outline: none;

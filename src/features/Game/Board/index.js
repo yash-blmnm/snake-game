@@ -26,7 +26,11 @@ const Board = () => {
         <InitialBoard />
       ) : (
         <>
-          {gameState === GAME_STATUS.over ? <EndBoard /> : ""}
+          {[GAME_STATUS.over, GAME_STATUS.success].includes(gameState) ? (
+            <EndBoard />
+          ) : (
+            ""
+          )}
           <ActiveBoard />
         </>
       )}

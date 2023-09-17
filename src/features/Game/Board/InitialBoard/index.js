@@ -36,7 +36,7 @@ function Initial() {
   return (
     <BoardWrapper>
       <SnakeAnimation />
-      <HeadingBanner textColor="#006400">SNAKE</HeadingBanner>
+      <HeadingBanner className="initial">SNAKE</HeadingBanner>
       <ButtonWrapper>
         <PlayButton
           onClick={() => startGame(INTERVAL.beginner)}

@@ -5,6 +5,8 @@ import { CONTROL_KEY_CODE } from "../Board/ActiveBoard/constants";
 import { GameContext } from "../GameContext";
 import { GAME_STATUS } from "../constants";
 
+const AllControlsWrapper = styled.section``;
+
 const ControlsWrapper = styled.div`
   display: none;
   flex-direction: column;
@@ -25,12 +27,16 @@ const HorizontalControlsWrapper = styled.div`
 const DetailsWrapper = styled.details`
   width: 100%;
   margin-top: 2em;
-  color: #006400;
+  color: #033203;
   summary {
     font-weight: 800;
   }
   p {
     margin: 0.125em;
+  }
+  @media (max-width: 768px) {
+    scale: 0.75;
+    margin: 0;
   }
 `;
 
@@ -48,7 +54,7 @@ const Controls = () => {
     }
   };
   return (
-    <>
+    <AllControlsWrapper>
       <DetailsWrapper open={true}>
         <summary>Keyboard Controls</summary>
         <p>Use the Up, Down, Lefft and Right arrows for direction.</p>
@@ -79,7 +85,7 @@ const Controls = () => {
           onClick={() => onControlsClick(CONTROL_KEY_CODE.space)}
         />
       </ControlsWrapper>
-    </>
+    </AllControlsWrapper>
   );
 };
 

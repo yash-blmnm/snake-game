@@ -6,6 +6,13 @@ import { GameProvider } from "./GameContext";
 import { styled } from "styled-components";
 import Controls from "./Conrtrols";
 
+const SectionsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const GameWrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -22,12 +29,14 @@ const GameWrapper = styled.section`
 const Game = () => {
   return (
     <GameProvider>
-      <GameWrapper>
-        <Score />
-        <GameBorder />
-        <Board />
+      <SectionsWrapper>
+        <GameWrapper>
+          <Score />
+          <GameBorder />
+          <Board />
+        </GameWrapper>
         <Controls />
-      </GameWrapper>
+      </SectionsWrapper>
     </GameProvider>
   );
 };

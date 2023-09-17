@@ -18,8 +18,8 @@ import { styled } from "styled-components";
 
 const ActiveBoardWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(${({cols}) => cols}, auto [col-start]);
-  grid-template-rows: repeat(${({rows}) => rows}, auto [row-start]);
+  grid-template-columns: repeat(${({ cols }) => cols}, auto [col-start]);
+  grid-template-rows: repeat(${({ rows }) => rows}, auto [row-start]);
   height: 100%;
   width: 100%;
 `;

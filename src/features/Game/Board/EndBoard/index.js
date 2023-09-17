@@ -16,18 +16,23 @@ const EndBoardWrapper = styled.div`
   z-index: 99;
   backdrop-filter: blur(10px);
   height: 100%;
-  width: 100%;
+  width: 90%;
 `;
 
 const EndBoard = () => {
   const {
-    state: { isHighScore, highScore },
+    state: { isHighScore, highScore, status: gameState },
     dispatch,
   } = useContext(GameContext);
+
   return (
     <EndBoardWrapper>
-      <HeadingBanner textColor="#d3d3d3">
-        {isHighScore ? `New High Score: ${highScore}` : "GAME OVER!"}
+      <HeadingBanner className="end">
+        {isHighScore
+          ? gameState === GAME_STATUS.success
+            ? "Congrats! You won!"
+            : `New High Score: ${highScore}`
+          : "GAME OVER!"}
       </HeadingBanner>
       <PlayButton
         onClick={() =>
