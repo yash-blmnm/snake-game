@@ -49,7 +49,7 @@ function gameReducer(state, action) {
     case "updateGameScore":
       {
         const { startTime } = state;
-        const { score } = state;
+        const { score } = action;
         if (
           Date.now() - startTime >= SUCCESS_CRITERIA.minInterval &&
           score >= SUCCESS_CRITERIA.minScore

@@ -21,7 +21,9 @@ const GameWrapper = styled.section`
   margin-top: 4em;
 
   @media (max-width: 768px) {
-    scale: 0.5;
+    position: relative;
+    top: -50px;
+    scale: 0.625;
     margin: 0px;
   }
 `;

@@ -5,7 +5,12 @@ import { CONTROL_KEY_CODE } from "../Board/ActiveBoard/constants";
 import { GameContext } from "../GameContext";
 import { GAME_STATUS } from "../constants";
 
-const AllControlsWrapper = styled.section``;
+const AllControlsWrapper = styled.section`
+  @media (max-width: 768px) {
+    position: relative;
+    top: -100px;
+  }
+`;
 
 const ControlsWrapper = styled.div`
   display: none;
